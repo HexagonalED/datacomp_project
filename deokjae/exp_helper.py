@@ -1,6 +1,6 @@
 import os, pickle
 
-
+# check files of path1 and path2 have same contents
 def check_same(path1, path2, encoding='utf8'):
     f = open(path1, 'r', encoding=encoding)
     g = open(path2, 'r', encoding=encoding)
@@ -23,12 +23,14 @@ def check_same(path1, path2, encoding='utf8'):
 def check_same_test():
     check_same('./dataset/dnaby','./result/dnaby/golomb/decoding/1')
 
+# get file size of path
 def get_file_size(path):
     return os.stat(path).st_size
 
 def get_file_size_test():
     print(get_file_size('./dataset/dnaby'))
 
+# read pkl file in path
 def read_pkl(path, encoding='ASCII'):
     '''read path(pkl) and return files
     Dependency : pickle
@@ -41,6 +43,7 @@ def read_pkl(path, encoding='ASCII'):
     print("Pickle is read from %s"%path)
     with open(path, 'rb') as f: return pickle.load(f, encoding=encoding)
 
+# write pkl file of content to path
 def write_pkl(content, path):
     '''write content on path with path
     Dependency : pickle
@@ -54,6 +57,7 @@ def write_pkl(content, path):
         try: pickle.dump(content, f)
         except OverflowError: pickle.dump(content, f, protocol=4)
 
+# create directory of name dirname
 def create_dir(dirname):
    '''create directory named dirname
    Dependency : os
@@ -70,6 +74,7 @@ def create_dir(dirname):
    else:
        print("Already %s exists"%dirname)
 
+# write dictionary of lists to path 
 def write_multi_array(dict_, path):
     keys = [str(v) for v in dict_.keys()]
     content_matrix = list()
@@ -85,12 +90,15 @@ def write_multi_array(dict_, path):
 
     with open(path, 'w') as f:
         content_matrix_write(content_matrix, f)
+
+# get invert matrix of matrix
 def invert_matrix(matrix):
     nrow = len(matrix)
     ncol = len(matrix[0])
     matrix_i = [[matrix[r][c] for r in range(nrow)] for c in range(ncol)]
     return matrix_i
 
+# write matrix to f.
 def content_matrix_write(matrix, f, invert=False):
     if invert:
         matrix = invert_matrix(matrix)
@@ -110,12 +118,6 @@ def content_matrix_write(matrix, f, invert=False):
 
     for r in range(nrow):
         f.write(','.join(matrix[r])+'\n')
-
-def write_dict_csv(dict_, path):
-    print("Write csv files on %s"%path)
-    with open(path, 'w') as f:
-        for key in sorted(dict_.keys()): f.write('{},{}\n'.format(str(key), dict_[key]))
-
 
 if __name__ == '__main__':
     check_same_test()

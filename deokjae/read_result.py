@@ -8,7 +8,7 @@ def golomb():
         saveroot = './result_csv/{}_{}_result.csv'.format(d,'golomb')
 
         root = './result/{}/{}/csv/'.format(d,'golomb')
-        example = read_pkl(root + '1')
+        example = read_pkl(root + 'binary_1')
 
         r = dict()
         r['prefix'] = list()
@@ -117,8 +117,8 @@ def lzw():
         write_multi_array(r, saveroot)
 
 if __name__ == '__main__':
-    golomb()
-    #tunstall()
-    #arithmetic()
-    #lzw_specific()
-    #lzw()
+    #golomb()
+    tunstall()
+    arithmetic()
+    lzw_specific()
+    lzw()

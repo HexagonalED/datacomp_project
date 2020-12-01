@@ -120,7 +120,7 @@ def lzw():
         write_multi_array(r, saveroot)
 
 if __name__ == '__main__':
-    #golomb()
+    golomb()
     tunstall()
     arithmetic()
     lzw_specific()

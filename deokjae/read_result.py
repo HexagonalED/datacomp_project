@@ -19,16 +19,29 @@ def golomb():
         for key in example.keys():
             r[key] = list()
         for prefix_name in ['binary', 'gamma', 'delta']:
-            for m in range(1,10):
-                path = root + '{}_{}'.format(prefix_name,int(m))
-                try:
-                    result = read_pkl(path)
-                    for key in result.keys():
-                        r[key].append(result[key])
-                    r['prefix'].append(prefix_name)
-                    r['m'].append(m)
-                except:
-                    print('prefix : {}, m : {} no reault'.format(prefix_name,m))
+            if d == 'SD1':
+                for m in [20,25,30,35,40]:
+                    path = root + '{}_{}'.format(prefix_name,int(m))
+                    try:
+                        result = read_pkl(path)
+                        for key in result.keys():
+                            r[key].append(result[key])
+                        r['prefix'].append(prefix_name)
+                        r['m'].append(m)
+                    except:
+                        print('prefix : {}, m : {} no reault'.format(prefix_name,m))
+            else:
+                for m in range(1,10):
+                    path = root + '{}_{}'.format(prefix_name,int(m))
+                    try:
+                        result = read_pkl(path)
+                        for key in result.keys():
+                            r[key].append(result[key])
+                        r['prefix'].append(prefix_name)
+                        r['m'].append(m)
+                    except:
+                        print('prefix : {}, m : {} no reault'.format(prefix_name,m))
+
         write_multi_array(r, saveroot)
 
 def tunstall():
@@ -96,8 +109,8 @@ def lzw_specific():
 
 def lzw():
     for d in ['dnaby','xmlby']:
-        saveroot = './result_csv/{}_{}_result.csv'.format(d,'lzw_specific')
-        root = './result/{}/{}/csv/'.format(d,'lzw_specific')
+        saveroot = './result_csv/{}_{}_result.csv'.format(d,'lzw')
+        root = './result/{}/{}/csv/'.format(d,'lzw')
         example = read_pkl(root + '10_10')
 
         r = dict()
@@ -120,7 +133,7 @@ def lzw():
         write_multi_array(r, saveroot)
 
 if __name__ == '__main__':
-    #golomb()
+    golomb()
     tunstall()
     arithmetic()
     lzw_specific()

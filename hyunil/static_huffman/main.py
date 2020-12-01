@@ -278,9 +278,9 @@ class Huffman(Tree):
         # print(bt)
         return bt
 
-    def encode(self, file_to_encode, outputfile):
+    def encode(self, file_to_encode, outputfile,enctype):
 
-        with open(file_to_encode, 'r+') as textfile, open(outputfile, 'wb') as outputfile:
+        with open(file_to_encode, 'r+',encoding=enctype) as textfile, open(outputfile, 'wb') as outputfile:
 
             text = textfile.read()
             text = text.rstrip()
@@ -378,18 +378,18 @@ class Huffman(Tree):
 
 
 if __name__=="__main__" :
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='')
     parser.add_argument('f', type=str)
     args = parser.parse_args()
     print(args.f)
     h=Huffman()
     start = time.time()
-    h.encode(args.f,'encoded_static_huffman')
-    h.decode('encoded_static_huffman','decoded_static_huffman')
+    if "/SD" in args.f or "/englishby" in args.f:
+        enctype="ISO-8859-1"
+    else:
+        enctype="utf-8"
+    h.encode(args.f,args.f+'.staticHuffman',enctype)
+    h.decode(args.f+'.staticHuffman',args.f+'.staticHuffmanDecompressed')
     print("time:",time.time()-start)
     h.view_tree(h.get_data())
 
-# h = Huffman()
-# h.encode('text.txt', 'encoded.bin')
-# h.decode('encoded.bin', 'decoded')
-# h.view_tree(h.get_data())

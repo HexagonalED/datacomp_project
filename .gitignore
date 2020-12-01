@@ -1,2 +1,4 @@
 deokjae/result/*
 input/*.*
+*__pycache__*
+deokjae/result_csv

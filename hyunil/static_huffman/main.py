@@ -382,14 +382,16 @@ if __name__=="__main__" :
     parser.add_argument('f', type=str)
     args = parser.parse_args()
     print(args.f)
+    if "/SD" in args.f or "/englishby" in args.f :
+        enc="ISO-8859-1"
+    else:
+        enc="utf-8"
     h=Huffman()
     start = time.time()
-    if "/SD" in args.f or "/englishby" in args.f:
-        enctype="ISO-8859-1"
-    else:
-        enctype="utf-8"
-    h.encode(args.f,args.f+'.staticHuffman',enctype)
-    h.decode(args.f+'.staticHuffman',args.f+'.staticHuffmanDecompressed')
-    print("time:",time.time()-start)
+    h.encode(args.f,args.f+'.staticHuffman',enc)
+    print("encode time:",time.time()-start)
+    start = time.time()
+    h.decode(args.f+'.staticHuffman',args.f+'.staticHuffmanDecoded')
+    print("decodetime:",time.time()-start)
     h.view_tree(h.get_data())
 

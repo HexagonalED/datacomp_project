@@ -5,7 +5,7 @@ from arcode import ArithmeticCode
 from lzw import lzw_encode, lzw_decode, get_all_chars
 from exp_helper import check_same, get_file_size, write_pkl, read_pkl, create_dir
 
-exp_dict = {'dnaby' : {'name' : 'dnaby', 'file_encoding' : 'utf-8'}, 
+exp_dict = {'dnaby' : {'name' : 'dnaby', 'file_encoding' : 'utf-8'},
             'englishby' : {'name' : 'englishby', 'file_encoding' : 'ISO-8859-1'},
             'xmlby' : {'name' : 'xmlby', 'file_encoding' : 'utf-8'},
             'SD1' : {'name' : 'SD1', 'file_encoding' : 'ISO-8859-1'},
@@ -14,10 +14,10 @@ exp_dict = {'dnaby' : {'name' : 'dnaby', 'file_encoding' : 'utf-8'},
             'SD4' : {'name' : 'SD4', 'file_encoding' : 'ISO-8859-1'}}
 
 def golomb(expname = 'dnaby', m=1, prefix_name='delta'):
-    from codes import binary, binary_decoder, gamma, gamma_decoder, delta, delta_decoder 
+    from codes import binary, binary_decoder, gamma, gamma_decoder, delta, delta_decoder
     import math
     # golomb
-    
+
     # prefix code : binary code
     if prefix_name == 'binary':
         digit = int(math.log2(m))+1
@@ -28,11 +28,11 @@ def golomb(expname = 'dnaby', m=1, prefix_name='delta'):
     # prefix code : Elias delta code
     elif prefix_name == 'delta':
         prefix, prefix_decoder = delta, delta_decoder
-    
+
     name = exp_dict[expname]['name']
     file_encoding = exp_dict[expname]['file_encoding']
     method = 'golomb'
-    
+
     # set path info
     path = './dataset/{}'.format(name)
     encoderoot = './result/{}/{}/encoding/'.format(name,method)
@@ -44,7 +44,6 @@ def golomb(expname = 'dnaby', m=1, prefix_name='delta'):
     encodepath = encoderoot + '{}_{}'.format(prefix_name,m)
     decodepath = decoderoot + '{}_{}'.format(prefix_name,m)
     csvpath = csvroot + '{}_{}'.format(prefix_name,m)
-    
     # < Encoding >
     time0 = time.time()
     # read file
@@ -55,23 +54,23 @@ def golomb(expname = 'dnaby', m=1, prefix_name='delta'):
     # process string to list of ints
     processed_lines = str2num(lines,prob)
     # encode list of ints to binary using golomb encoding
-    encoded_lines = golomb_encoder(processed_lines,m,prefix) 
+    encoded_lines = golomb_encoder(processed_lines,m,prefix)
     # write binary
-    write_binary(encodepath, encoded_lines) 
+    write_binary(encodepath, encoded_lines)
     time1 = time.time()
-    
+
     # < Decoding >
     # read encoded file
     lines = read_binary(encodepath)
     prob = read_pkl(encoderoot+'prob_{}_{}'.format(prefix_name,m))
     # decode encoded file using golomb decoding
-    decoded_lines = golomb_decoder(lines, m,prefix_decoder) 
+    decoded_lines = golomb_decoder(lines, m,prefix_decoder)
     # process list of ints to string using probability distribution
     decoded_string = num2str(decoded_lines,prob)
     # write decoded string
     write_string(decoded_string, decodepath,encoding=file_encoding)
     time2 = time.time()
-    
+
     # Save results
     result = dict()
     result['is_right'] = check_same(path,decodepath, encoding=file_encoding)
@@ -102,7 +101,7 @@ def tunstall(expname = 'dnaby', n=8):
     encodepath = encoderoot + '{}'.format(n)
     decodepath = decoderoot + '{}'.format(n)
     csvpath = csvroot + '{}'.format(n)
-    
+
     # < Encoding >
     time0 = time.time()
     # read file
@@ -118,9 +117,9 @@ def tunstall(expname = 'dnaby', n=8):
     # encode list of characters to binary using tunstall encoding
     encoded_lines = tunstall_encoder(processed_lines,n,leaves)
     # write binary
-    write_binary(encodepath, encoded_lines) 
+    write_binary(encodepath, encoded_lines)
     time1 = time.time()
-    
+
     # < Decoding >
     # read encoded file
     lines = read_binary(encodepath)
@@ -135,7 +134,6 @@ def tunstall(expname = 'dnaby', n=8):
     # write decoded string
     write_string(decoded_string, decodepath, encoding=file_encoding)
     time2 = time.time()
-    
     # Save results.
     result = dict()
     result['is_right'] = check_same(path,decodepath, encoding=file_encoding)
@@ -154,7 +152,7 @@ def arithmetic(expname = 'dnaby'):
     name = exp_dict[expname]['name']
     file_encoding = exp_dict[expname]['file_encoding']
     method = 'arithmetic'
-    
+
     # set path info
     path = './dataset/{}'.format(name)
     encoderoot = './result/{}/{}/encoding/'.format(name,method)
@@ -166,7 +164,6 @@ def arithmetic(expname = 'dnaby'):
     encodepath = encoderoot + '0'
     decodepath = decoderoot + '0'
     csvpath = csvroot + '0'
-    
     # < Encoding >
     time0 = time.time()
     # init coder
@@ -180,7 +177,6 @@ def arithmetic(expname = 'dnaby'):
     # decode file
     ar.decode_file(encodepath, decodepath)
     time2 = time.time()
-    
     # Save results
     result = dict()
     result['is_right'] = check_same(path,decodepath, encoding=file_encoding)
@@ -194,11 +190,11 @@ def arithmetic(expname = 'dnaby'):
     write_pkl(result, csvpath)
 
 def lzw_specific(expname = 'dnaby', size_min=8, size_max=12):
-    # lzw_specific 
+    # lzw_specific
     name = exp_dict[expname]['name']
     file_encoding = exp_dict[expname]['file_encoding']
     method = 'lzw_specific'
-    
+
     # set path info
     path = './dataset/{}'.format(name)
     encoderoot = './result/{}/{}/encoding/'.format(name,method)
@@ -222,9 +218,9 @@ def lzw_specific(expname = 'dnaby', size_min=8, size_max=12):
     # encode input string by lzw with given chars.
     encoded_lines = lzw_encode(lines, given_chars, size_min, size_max)
     # write file
-    write_binary(encodepath, encoded_lines) 
+    write_binary(encodepath, encoded_lines)
     time1 = time.time()
-    
+
     # < Decoding>
     # read encoded file
     lines = read_binary(encodepath)
@@ -232,11 +228,11 @@ def lzw_specific(expname = 'dnaby', size_min=8, size_max=12):
     prob = read_pkl(encoderoot+'prob_{}_{}'.format(size_min,size_max))
     given_chars = list(prob.keys())
     # decode file.
-    decoded_string = lzw_decode(lines, given_chars, size_min, size_max) 
+    decoded_string = lzw_decode(lines, given_chars, size_min, size_max)
     # write decoded string.
     write_string(decoded_string, decodepath,encoding=file_encoding)
     time2 = time.time()
-    
+
     # Save results
     result = dict()
     result['is_right'] = check_same(path,decodepath, encoding=file_encoding)
@@ -267,7 +263,7 @@ def lzw(expname = 'dnaby', size_min=8, size_max=12):
     encodepath = encoderoot + '{}_{}'.format(size_min, size_max)
     decodepath = decoderoot + '{}_{}'.format(size_min, size_max)
     csvpath = csvroot + '{}_{}'.format(size_min, size_max)
-    
+
     # < Encoding >
     time0 = time.time()
     # read file
@@ -277,18 +273,18 @@ def lzw(expname = 'dnaby', size_min=8, size_max=12):
     # Encode file by lzw with default chars
     encoded_lines = lzw_encode(lines, all_chars, size_min, size_max)
     # write encoded string.
-    write_binary(encodepath, encoded_lines) 
+    write_binary(encodepath, encoded_lines)
     time1 = time.time()
-    
+
     # < Decoding >
     # read encoded file
     lines = read_binary(encodepath)
-    # Decode file by lzw with default chars 
-    decoded_string = lzw_decode(lines, all_chars, size_min, size_max) 
+    # Decode file by lzw with default chars
+    decoded_string = lzw_decode(lines, all_chars, size_min, size_max)
     # write decoded string
     write_string(decoded_string, decodepath,encoding=file_encoding)
     time2 = time.time()
-    
+
     # Save results.
     result = dict()
     result['is_right'] = check_same(path,decodepath, encoding=file_encoding)

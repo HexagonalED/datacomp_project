@@ -4,6 +4,8 @@
 import struct
 import sys
 import math
+import io
+import time
 
 def LZ77_search(search, look_ahead):
 
@@ -45,9 +47,14 @@ def main():
 	MAXSEARCH = int(sys.argv[2])
 	MAXLH =  int(math.pow(2, (x  - (math.log(MAXSEARCH, 2)))))
 
+
 	file_to_read = sys.argv[1]
-	input = parse(file_to_read)
-	file = open("compressed.bin", "wb")
+	if "/SD" in file_to_read or "/englishby" in file_to_read:
+	    enctype = "ISO-8859-1"
+	else:
+	    enctype = "utf-8"
+	input = parse(file_to_read,enctype)
+	file = io.open(file_to_read+".lz77", "wb")
 	searchiterator = 0;
 	lhiterator = 0;
 
@@ -60,6 +67,7 @@ def main():
 		shifted_offset = offset << 6
 		offset_and_length = shifted_offset+length
 		ol_bytes = struct.pack(">Hc",offset_and_length,char)
+		#print(ol_bytes)
 		file.write(ol_bytes)
 
 
@@ -73,12 +81,14 @@ def main():
 	file.close()
 
 
-def parse(file):
+def parse(file,enctype):
 	r=[]
-	f = open(file, "rb" )
+	f = io.open(file, "rb")
 	text = f.read()
 	return text
 
 if __name__== "__main__":
-	main()
+    start = time.time()
+    main()
+    print("encode time:",time.time()-start)
 

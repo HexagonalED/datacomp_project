@@ -1,14 +1,15 @@
 import struct
 import os
-import sys 
+import sys
+import time
 
 
 
 def decoder(name, out, search):
 	MAX_SEARCH = search
-	file = open(name,"rb") 
-	input = file.read() 
-	
+	file = open(name,"rb")
+	input = file.read()
+
 	chararray = ""
 	i=0
 
@@ -33,7 +34,7 @@ def decoder(name, out, search):
 		if(offset == 0) and (length == 0):
 			chararray += char
 
-		#case is (x,y,c)	
+		#case is (x,y,c)
 		else:
 			iterator = len(chararray) - MAX_SEARCH
 			if iterator <0:
@@ -42,17 +43,19 @@ def decoder(name, out, search):
 				iterator += offset
  			for pointer in range(length):
 				chararray += chararray[iterator+pointer]
-			chararray += char	
-			
-	 			
-	out.write(chararray) 
+			chararray += char
+
+
+	out.write(chararray)
 
 def main():
 	MAX_SEARCH = int(sys.argv[1])
-	file_type = sys.argv[2] 
-	processed = open("processed."+ file_type,"wb")
-	decoder("compressed.bin",processed, MAX_SEARCH)
+	file_type = sys.argv[2]
+	processed = open(file_type+".lz77.decompressed","w")
+	decoder(file_type+".lz77",processed, MAX_SEARCH)
 	processed.close
 
 if __name__== "__main__":
-	main()
+    start = time.time()
+    main()
+    print("decode time:",time.time()-start)

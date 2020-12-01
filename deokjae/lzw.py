@@ -9,7 +9,7 @@ def get_all_chars():
         chars.append(chr(i))
     for i in range(ord('0'), ord('9')+1):
         chars.append(chr(i))
-    chars += ['?', '!', ' ', ',', '.', ':', ';', '\n', '\r', '\t']
+    chars += ['?', '!', ' ', ',', '.', ':', ';', '\n', '\r', '\t', '>', '<', '(', ')', '/', '-', '_', '#', '=', '"', '&', "'", '+', '\\', '*', '`', '{', '}', '^', '|', '[',']']
     return chars
 
 # trie implemented by dictionary.

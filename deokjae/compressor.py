@@ -309,11 +309,19 @@ if __name__=="__main__":
     def exp_golomb():
         for expname in exp_dict.keys():
             for prefix_name in ['binary','gamma','delta']:
-                for m in range(1,10):
-                    try:
-                        golomb(expname, m, prefix_name)
-                    except:
-                        print("expname : {}, m : {} is bad".format(expname, m))
+                if expname == 'SD1':
+                    for m in [20,25,30,35,40]:
+                        try:
+                            golomb(expname, m, prefix_name)
+                        except:
+                            print("expname : {}, m : {} is bad".format(expname, m))
+                else:
+                    for m in range(1,10):
+                        try:
+                            golomb(expname, m, prefix_name)
+                        except:
+                            print("expname : {}, m : {} is bad".format(expname, m))
+
     def exp_tunstall():
         for expname in exp_dict.keys():
             for n in range(5,15):
@@ -337,7 +345,7 @@ if __name__=="__main__":
                         except:
                             print("expname : {}, size_min : {}, size_max : {} is bad".format(expname, size_min, size_max))
     def exp_lzw():
-        for expname in exp_dict.keys():
+        for expname in ['dnaby', 'xmlby']:
             for size_min in range(8,12):
                 for size_max in range(8,16):
                     if size_min <= size_max:

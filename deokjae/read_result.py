@@ -8,7 +8,10 @@ def golomb():
         saveroot = './result_csv/{}_{}_result.csv'.format(d,'golomb')
 
         root = './result/{}/{}/csv/'.format(d,'golomb')
-        example = read_pkl(root + 'binary_1')
+        if d == 'SD1':
+            example = read_pkl(root + 'binary_20')
+        else:
+            example = read_pkl(root + 'binary_1')
 
         r = dict()
         r['prefix'] = list()
@@ -92,7 +95,7 @@ def lzw_specific():
         write_multi_array(r, saveroot)
 
 def lzw():
-    for d in ['dnaby','englishby','xmlby']:
+    for d in ['dnaby','xmlby']:
         saveroot = './result_csv/{}_{}_result.csv'.format(d,'lzw_specific')
         root = './result/{}/{}/csv/'.format(d,'lzw_specific')
         example = read_pkl(root + '10_10')

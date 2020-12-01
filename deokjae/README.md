@@ -1,3 +1,4 @@
+Requirements : python 3.5
 How to run:
 1. Golomb
     - python compression.py --method golomb 
